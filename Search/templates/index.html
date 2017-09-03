@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" type="text/css" href="static/semantic.css">
+  <link rel="stylesheet" type="text/css" href="static/main.css">
+  <meta charset="utf-8">
+  <title>Information Search</title>
+</head>
+
+<body>
+  <div class="ui one column centered grid container">
+    <div class="column">
+      <div class="b-header">
+      <h1>Поиск по Википедии</h1>
+      <form>
+        <div>
+          <div class="ui icon input">
+            <input name="search" type="text" placeholder="Search..." required="True">
+            <i class="search icon"></i>
+          </div>
+          <button type="submit" class="ui blue button">Поиск</button>
+        </div>
+        <div >
+            <div class="ui toggle checkbox b-radio-block">
+              <input value="boolean" id="boolean" type="radio" name="option">
+              <label>Булев поиск</label>
+            </div>
+            <div class="ui toggle checkbox b-radio-block">
+              <input value="headers" id="head" type="radio" name="option">
+              <label>Поиск по заголовкам</label>
+            </div>
+        </div>
+      </form>
+    </div>
+    {% if result %}
+      <div class="ui segment">
+        <div class="ui ordered list">
+          {% for answer in result[0] %}
+            <a a class="item" href="https://ru.wikipedia.org/wiki?curid={{answer[0]}}">{{answer[1]}}</a>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="b-search-results">Показанно <span class="b-search-count">{{result[0]|length}}</span>  результатов. Всего <span class="b-search-count">{{result[1]}}</span> документов.</div>
+    {% else %}
+        <div class="b-search-results">  Нет резульатов </div>
+    {% endif %}
+    </div>
+  </div>
+</body>
+</html>

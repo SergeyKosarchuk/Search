@@ -1,0 +1,23 @@
+.b-radio-block {
+  display: block !important;
+  margin: 10px 0px;
+}
+
+.b-header {
+  width: 300px;
+  margin: 50px auto;
+}
+
+.b-search-results {
+  margin-top: 50px;
+  text-align: center;
+  font-size: 16px;
+  /*color: #ccc;*/
+  font-style: oblique;
+  font-weight: 300;
+}
+
+.b-search-count {
+  font-weight: bold;
+  color: #1d1d1d;
+}
