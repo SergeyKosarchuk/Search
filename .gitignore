@@ -16,6 +16,10 @@ Icon
 # Config
 config.py
 
+# Project support files
+Support
+Documents
+
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100
 .fseventsd
