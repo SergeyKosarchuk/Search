@@ -2,6 +2,7 @@ import struct
 from math import log
 from config import *
 
+
 class Reader:
     """ Класс для загрузки разных словарей с диска в память.
         Также есть функции для чтения блоков из индекса. """

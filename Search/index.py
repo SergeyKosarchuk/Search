@@ -382,4 +382,4 @@ def Build(type_):
     'article' : _art_index,
     'all' : _all
     }
-    choise.get(type_, lambda : print('Запуск приложения без перестроения индекса.'))()
+    choise.get(type_)()
