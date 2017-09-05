@@ -1,5 +1,7 @@
 from flask import Flask,render_template,request
 
+from Search.search import Search
+
 import argparse
 
 app = Flask(__name__)
@@ -10,7 +12,6 @@ def index():
     query = request.args.get('search')
     if query:
         type_ = request.args.get('option', 'tfidf')
-        print('type = ',type_)
         result = Search.Search(type_, query)
         return render_template('index.html', result=result)
     return render_template('index.html')
