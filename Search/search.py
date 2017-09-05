@@ -1,5 +1,6 @@
 from Stemmer import Stemmer
 from .read import Reader
+# from .snippets import Snippets
 
 
 class Search:

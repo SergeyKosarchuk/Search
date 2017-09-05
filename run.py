@@ -1,5 +1,7 @@
 from flask import Flask,render_template,request
 
+from Search.search import Search
+
 import argparse
 
 app = Flask(__name__)
