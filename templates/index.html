@@ -36,7 +36,8 @@
       <div class="ui segment">
         <div class="ui ordered list">
           {% for answer in result[0] %}
-            <a a class="item" href="https://ru.wikipedia.org/wiki?curid={{answer[0]}}">{{answer[1]}}</a>
+            <a a class="item" href="https://ru.wikipedia.org/wiki?curid={{answer.id}}">{{answer.title}}</a>
+             {{answer.snippet}}
           {% endfor %}
         </div>
       </div>

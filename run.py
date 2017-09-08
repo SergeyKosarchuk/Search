@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 
 app = Flask(__name__)
 rd = Reader()
-sh = Searcher(rd.title_dict, rd.token_dict)
+sh = Searcher(rd)
 
 
 @app.route('/')
@@ -15,7 +15,7 @@ def index():
     query = request.args.get('search')
     if query:
         type_ = request.args.get('option', 'tfidf')
-        result = sh.Searcher(type_, query)
+        result = sh.Search(type_, query)
         return render_template('index.html', result=result)
     return render_template('index.html')
 

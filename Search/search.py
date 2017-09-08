@@ -1,6 +1,6 @@
 from Stemmer import Stemmer
 from .read import Reader
-# from .snippets import Snippets
+from .snippets import Snippets
 
 
 class Searcher:
@@ -74,22 +74,40 @@ class Searcher:
         list_result = list(map(lambda x: x[0],list_result))
         return list_result
 
+    def _prepare(self, result, query):
+        answer = []
+        snippets = self.st.Build(result, query)
+        for id_ in result:
+            art = Article(id_)
+            art.title = self.title_dict[art.id]
+            art.snippet = snippets[art.id]
+            answer.append(art)
+        return answer
 
-    def __init__(self, title_dict, token_dict):
+
+    def __init__(self, reader):
         self.stemmer = Stemmer('russian')
-        self.title_dict = title_dict
-        self.token_dict = token_dict
+        self.st = Snippets(reader.article_dict, self.stemmer)
+        self.title_dict = reader.title_dict
+        self.token_dict = reader.token_dict
         self.switch = {
             'boolean': self._boolean,
             'tfidf': self._tfidf,
             'head': self._head
         }
 
-
     # Общая функция для поиска. Выбор поиска по его типу. Также здесь
     # логично будет добавить сниппеты к результатам. В будущем можно объединить
     # все выходные данные в один объект.
-    def Search(self, type_, query):
+    def Search(self, type_, query, number=30):
         result = self.switch[type_](query)
-        result = (list(map(lambda x: (x, self.title_dict[x]), result[:30])), len(result))
-        return result
+        total = len(result)
+        result = list(result[:number])
+        result = self._prepare(result, query)
+        return result, total
+
+
+class Article:
+    __slots__ = ('id', 'snippet', 'title')
+    def __init__(self, id_):
+        self.id = id_
