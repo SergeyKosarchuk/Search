@@ -1,12 +1,12 @@
 from flask import Flask,render_template,request
-from Search.search import Search
+from Search.search import Searcher
 from Search.read import Reader
 from argparse import ArgumentParser
 
 
 app = Flask(__name__)
 rd = Reader()
-sh = Search(rd.title_dict, rd.token_dict)
+sh = Searcher(rd.title_dict, rd.token_dict)
 
 
 @app.route('/')
@@ -15,7 +15,7 @@ def index():
     query = request.args.get('search')
     if query:
         type_ = request.args.get('option', 'tfidf')
-        result = sh.Search(type_, query)
+        result = sh.Searcher(type_, query)
         return render_template('index.html', result=result)
     return render_template('index.html')
 

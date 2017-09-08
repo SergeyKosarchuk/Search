@@ -3,7 +3,7 @@ from .read import Reader
 # from .snippets import Snippets
 
 
-class Search:
+class Searcher:
     """ Класс для реализации поиска по готовым индексам.
         Содержит в себе булев, тфидф и поиск по заголовкам.
         Нужно добавить реализацию цитатного поиска. """
