@@ -8,7 +8,7 @@ class Reader:
         Также есть функции для чтения блоков из индекса. """
 
 
-    def _article_dict():
+    def _article_dict(self):
         d = {}
         with open(PATH + ARTICLE_INDEX, 'rb') as f:
             amount = struct.unpack('H', f.read(2))[0]
@@ -22,7 +22,7 @@ class Reader:
         return d
 
 
-    def _title_dict():
+    def _title_dict(self):
         d = {}
         with open(PATH + TITLE_DICTIONARY,'rb') as f:
             amount = struct.unpack('I', f.read(4))[0]  # Кол-во документов
@@ -33,7 +33,7 @@ class Reader:
         return d
 
 
-    def _token_dict():
+    def _token_dict(self):
         d = {}
         with open(PATH + TOKEN_DICTIONARY_BOOL,'rb') as f:
             amount = struct.unpack('I', f.read(4))[0]  # Кол-во токенов
@@ -77,7 +77,7 @@ class Reader:
 
     # Чтение координатного блока из tfidf индекса в список, аргументы:
     # файл, offset токена в файле
-    def block_for_termin_tfidf(termin, coord_block, token_dict):
+    def block_for_termin_tfidf(termin, coord_block, title_dict, token_dict):
         file_name = PATH + INDEX_TFIDF
         offset = token_dict.get(termin, None)
         if offset is None:
@@ -86,13 +86,15 @@ class Reader:
         with open(file_name,'rb') as f:
             f.seek(offset) #Переход в начало нужного коорд блока
             l = struct.unpack('I', f.read(4))[0] #длина блока (кол-во docId)
-            value_idf = log(len(Reader.title_dict)/l)
+            value_idf = log(len(title_dict)/l)
             for _ in range(l):
                 doc_id = struct.unpack('I', f.read(4))[0]
                 value_tf = struct.unpack('f', f.read(4))[0]
                 coord_block[doc_id] = coord_block.get(doc_id,0) + value_tf * value_idf
         return coord_block
 
-    title_dict = _title_dict()
-    token_dict = _token_dict()
-    article_dict = _article_dict()
+
+    def __init__(self):
+        self.title_dict = self._title_dict()
+        self.token_dict = self._token_dict()
+        self.article_dict = self._article_dict()
