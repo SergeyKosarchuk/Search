@@ -1,10 +1,13 @@
 from flask import Flask,render_template,request
+from Search.search import Searcher
+from Search.read import Reader
+from argparse import ArgumentParser
 
-from Search.search import Search
-
-import argparse
 
 app = Flask(__name__)
+rd = Reader()
+sh = Searcher(rd)
+
 
 @app.route('/')
 def index():
@@ -12,15 +15,14 @@ def index():
     query = request.args.get('search')
     if query:
         type_ = request.args.get('option', 'tfidf')
-        print('type = ',type_)
-        result = Search.Search(type_, query)
+        result = sh.Search(type_, query)
         return render_template('index.html', result=result)
     return render_template('index.html')
 
 
 def pars_args():
     """Settings for argparse"""
-    parser = argparse.ArgumentParser(prog='Поиск по дампам Википедии',
+    parser = ArgumentParser(prog='Поиск по дампам Википедии',
             usage='Перед первым запуском приложения нужно построить индекс.',
             description='Для построения запустите приложение с ключом -i.')
 
