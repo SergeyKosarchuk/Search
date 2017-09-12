@@ -3,12 +3,6 @@ from Search.search import Searcher
 from Search.read import Reader
 from argparse import ArgumentParser
 
-<<<<<<< HEAD
-from Search.search import Search
-
-import argparse
-=======
->>>>>>> 4789ac59c7dacae5b0d459968344c4c0cd343983
 
 app = Flask(__name__)
 rd = Reader()
@@ -21,11 +15,8 @@ def index():
     query = request.args.get('search')
     if query:
         type_ = request.args.get('option', 'tfidf')
-<<<<<<< HEAD
         result = Search.Search(type_, query)
-=======
         result = sh.Search(type_, query)
->>>>>>> 4789ac59c7dacae5b0d459968344c4c0cd343983
         return render_template('index.html', result=result)
     return render_template('index.html')
 
