@@ -5,8 +5,7 @@ from config import ARTICLE_INDEX, PATH, NAME_DIR_WITH_DAMPS
 
 class Snippets:
     """ Класс для построения сниппетов. На данный момент работает загрузка
-        докуменов по списку их ид. Также есть группировка файлов.
-        Нужно реализовать пострение сниппетов по термину и его позиции. """
+        докуменов по списку их ид. Также есть группировка файлов. """
 
     def __init__(self, article_dict, stemmer):
         self.stemmer = stemmer
@@ -70,6 +69,9 @@ class Snippets:
                     articles[id_] = article['text']
         return articles
 
+
+    # Функция для получения контекста слова из текста.
+    # Пока работает только для одного слова.
     def _get_context(self, text, termin, n=10):
         text = text.replace('"См. также: "','')
         text = text.split()
@@ -79,10 +81,13 @@ class Snippets:
             word = self.stemmer.stemWord(word)
             if word == termin:
                 break
+        # Можно добавить гибкие границы для красоты и информативности.
+        # Также стоит добавить пометку для выделения слова курсивом.
         start = pos - n
         end = pos + n + 1
         snippet = snippet + ' '.join(text[start:pos] + text[pos:end])
         return snippet
+
 
     # Основная функция для построения сниппетов.
     # На данный момент показывает только заголовки.

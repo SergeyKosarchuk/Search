@@ -1,24 +1,5 @@
-from flask import Flask,render_template,request
-from Search.search import Searcher
-from Search.read import Reader
 from argparse import ArgumentParser
-
-
-app = Flask(__name__)
-rd = Reader()
-sh = Searcher(rd)
-
-
-@app.route('/')
-def index():
-    result = []
-    query = request.args.get('search')
-    if query:
-        type_ = request.args.get('option', 'tfidf')
-        result = sh.Search(type_, query)
-        return render_template('index.html', result=result)
-    return render_template('index.html')
-
+from Search import app
 
 def pars_args():
     """Settings for argparse"""
