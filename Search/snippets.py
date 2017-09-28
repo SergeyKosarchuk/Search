@@ -5,10 +5,10 @@ from config import ARTICLE_INDEX, PATH, NAME_DIR_WITH_DAMPS
 
 class Snippets:
     """ Класс для построения сниппетов. На данный момент работает загрузка
-        докуменов по списку их ид. Также есть группировка файлов.
-        Нужно реализовать пострение сниппетов по термину и его позиции. """
+        докуменов по списку их ид. Также есть группировка файлов. """
 
-    def __init__(self, article_dict):
+    def __init__(self, article_dict, stemmer):
+        self.stemmer = stemmer
         self.article_dict = article_dict
         self.p = Path(NAME_DIR_WITH_DAMPS)
         self.directories = [x for x in self.p.iterdir() if x.is_dir()]
@@ -65,12 +65,37 @@ class Snippets:
                 if i in lines.keys():
                     article = loads(line)
                     id_ = lines[i]
-                    articles[id_] = article['title']
-                    # articles[id_] = article['text']
+                    # articles[id_] = article['title']
+                    articles[id_] = article['text']
         return articles
 
+
+    # Функция для получения контекста слова из текста.
+    # Пока работает только для одного слова.
+    def _get_context(self, text, termin, n=10):
+        text = text.replace('"См. также: "','')
+        text = text.split()
+        snippet = ''
+        for pos, word in enumerate(text):
+            word = word.lower().strip(",'.!")
+            word = self.stemmer.stemWord(word)
+            if word == termin:
+                break
+        # Можно добавить гибкие границы для красоты и информативности.
+        # Также стоит добавить пометку для выделения слова курсивом.
+        start = pos - n
+        end = pos + n + 1
+        snippet = snippet + ' '.join(text[start:pos] + text[pos:end])
+        return snippet
+
+
     # Основная функция для построения сниппетов.
-    # На данный момент показывает только заголовки. Для выбранных по ид статей.
-    def Build(self, ids):
-        answer = self._load_articles(ids)
-        return answer
+    # На данный момент показывает только заголовки.
+    # На вход получает словарь (ид -> позиция).
+    def Build(self, ids, query):
+        """ Id -> snippet dictionary. """
+        articles = self._load_articles(ids)
+        snippets = {}
+        for id, text in articles.items():
+            snippets[id] = self._get_context(text, query)
+        return snippets

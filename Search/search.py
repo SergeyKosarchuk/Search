@@ -1,10 +1,6 @@
 from Stemmer import Stemmer
 from .read import Reader
-<<<<<<< HEAD
-# from .snippets import Snippets
-=======
 from .snippets import Snippets
->>>>>>> 4789ac59c7dacae5b0d459968344c4c0cd343983
 
 
 class Searcher:
@@ -78,9 +74,9 @@ class Searcher:
         list_result = list(map(lambda x: x[0],list_result))
         return list_result
 
-    def _prepare(self, result):
+    def _prepare(self, result, query):
         answer = []
-        snippets = self.st.Build(result)
+        snippets = self.st.Build(result, query)
         for id_ in result:
             art = Article(id_)
             art.title = self.title_dict[art.id]
@@ -91,7 +87,7 @@ class Searcher:
 
     def __init__(self, reader):
         self.stemmer = Stemmer('russian')
-        self.st = Snippets(reader.article_dict)
+        self.st = Snippets(reader.article_dict, self.stemmer)
         self.title_dict = reader.title_dict
         self.token_dict = reader.token_dict
         self.switch = {
@@ -107,7 +103,7 @@ class Searcher:
         result = self.switch[type_](query)
         total = len(result)
         result = list(result[:number])
-        result = self._prepare(result)
+        result = self._prepare(result, query)
         return result, total
 
 
