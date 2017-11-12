@@ -1,0 +1,11 @@
+aiohttp==2.3.1
+async-timeout==2.0.0
+bleach==2.1.1
+chardet==3.0.4
+html5lib==1.0b10
+htmlpurifier==1.0.1
+multidict==3.3.0
+six==1.11.0
+tornado==4.5.2
+webencodings==0.5.1
+yarl==0.13.0
