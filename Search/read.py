@@ -28,8 +28,8 @@ class Reader:
             amount = struct.unpack('I', f.read(4))[0]  # Кол-во документов
             for _ in range(amount):
                 docId = struct.unpack('I', f.read(4))[0]  # Номер документа
-                lenght = struct.unpack('I', f.read(4))[0]  # Длинна заголовка
-                d[docId] = struct.unpack(str(lenght) + 's', f.read(lenght))[0].decode('utf-8')
+                length = struct.unpack('I', f.read(4))[0]  # Длинна заголовка
+                d[docId] = struct.unpack(str(length) + 's', f.read(length))[0].decode('utf-8')
         return d
 
 
