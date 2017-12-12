@@ -95,9 +95,6 @@ class Reader:
 
 
     def __init__(self):
-        # self.title_dict = self._title_dict()
-        # self.token_dict = self._token_dict()
-        # self.article_dict = self._article_dict()
         self.title_dict = None
         self.token_dict = None
         self.article_dict = None
