@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from json import loads
 from re import split
-from os import remove
+from os import remove, path, remove, mkdir, walk
 from pathlib import Path
 from struct import pack
 from Stemmer import Stemmer
@@ -92,7 +92,7 @@ def write_index(file_name):
 # Возвращает кол-во полученных индексов.
 def create_indexs(distr_damps_name,distrIndexName):
     contdir = []
-    for i in os.walk(distr_damps_name):
+    for i in walk(distr_damps_name):
         contdir.append(i)
     files = []
     for i in contdir:
@@ -175,7 +175,7 @@ def read_coord_block_from_files(coord_block,files_indexs,token_id):
 def merge_indexs(distr_name, file_name_global_index, file_name_token_dict, file_name_art_dict):
     global tfidf
     contdir = []
-    for i in os.walk(distr_name):
+    for i in walk(distr_name):
         contdir.append(i)
     files = []  # список имен всех файлов в директории и поддиректориях
     for i in contdir:
@@ -218,7 +218,7 @@ def merge_indexs(distr_name, file_name_global_index, file_name_token_dict, file_
         for i in range(max_file_for_merge):
             remove(files[i])
         files.clear()
-        for i in os.walk(distr_name):
+        for i in walk(distr_name):
             contdir.append(i)
         for i in contdir:
             for j in i[2]:
@@ -255,7 +255,7 @@ def merge_indexs(distr_name, file_name_global_index, file_name_token_dict, file_
 
 
 def create_global_index(distr_damps_name):
-    if not os.path.exists(distr_damps_name):
+    if not path.exists(distr_damps_name):
         print('Указанной директории с дампами не существует!')
         return
     if tfidf:
@@ -263,15 +263,15 @@ def create_global_index(distr_damps_name):
     else:
         bool_or_tfidf = 'bool'
     try:
-        os.mkdir(distr_damps_name + '/index')
+        mkdir(distr_damps_name + '/index')
     except OSError:
         print('Директория (' + distr_damps_name + '/index) уже существует!')
     try:
-        os.mkdir(distr_damps_name + '/index/tmp')
+        mkdir(distr_damps_name + '/index/tmp')
     except OSError:
         print('Директория (' + distr_damps_name + '/index/tmp) удалена!')
         shutil.rmtree(distr_damps_name + '/index/tmp')
-        os.mkdir(distr_damps_name + '/index/tmp')
+        mkdir(distr_damps_name + '/index/tmp')
     create_indexs(distr_damps_name,distr_damps_name + '/index/tmp')
     merge_indexs(distr_damps_name + '/index/tmp',distr_damps_name + '/index/index'+ bool_or_tfidf + '.ind',
                 distr_damps_name + '/index/index' + bool_or_tfidf + '.tdict',distr_damps_name + '/index/index.adict')
@@ -342,6 +342,7 @@ def _art_index():
                 file_number = pars_dir(d, file_number, f)
                 i = i + 1
                 p.update(i)
+    
 
 
 ###############################################################################
